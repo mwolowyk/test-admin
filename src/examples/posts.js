@@ -23,7 +23,7 @@ export const PostList = (props) => (
         } medium={
             <Datagrid>
                 <TextField source="id"/>
-                <TextField label="user-raw" source="userId"/>
+                <TextField label="user-id" source="userId"/>
                 <ReferenceField label="User" source="userId" reference="users">
                     <TextField source="name"/>
                 </ReferenceField>
