@@ -7,33 +7,40 @@ import { List, Edit, Show, Create, Datagrid, ReferenceField,
 
 const AuthorQueryFilter = (props) => (
     <Filter {...props}>
-        <TextInput label="Search" source="name" alwaysOn />
+        <TextInput label="Search" source="q" alwaysOn />
     </Filter>
 );
 
 export const AuthorQueryList = (props) => (
     <List {...props} filters={<AuthorQueryFilter />}>
-        <Datagrid>
-            {/*<TextField source="id"/>*/}
-            <TextField source="doi"/>
-            <TextField label="author email" source="authorEmail"/>
-            <TextField label="journal No" source="journalNo"/>
-            <TextField label="journal Title" source="journalTitle"/>
-            <TextField label="article Title" source="articleTitle"/>
-            <EditButton/>
-            <ShowButton/>
-        </Datagrid>
+        <Responsive small={
+            <SimpleList primaryText={record => record.articleTitle}
+                        secondaryText={record => record.authorEmail}
+                        tertiaryText={record => record.journalTitle}/>
+        } medium={
+            <Datagrid>
+                {/*<TextField source="id"/>*/}
+                <TextField source="doi"/>
+                <TextField label="author email" source="authorEmail"/>
+                <TextField label="journal No" source="journalNo"/>
+                <TextField label="journal Title" source="journalTitle"/>
+                <TextField label="article Title" source="articleTitle"/>
+                <EditButton/>
+                <ShowButton/>
+            </Datagrid>
+        }>
+        </Responsive>
     </List>
 );
 
 const AuthorQueryTitle = ({ record }) => {
-    return <span>AuthorQuery {record ? `"${record.name}"` : ''}</span>;
+    return <span>{record ? `AuthorQuery of ${record.authorEmail} for "${record.articleTitle} (in ${record.journalTitle})"` : ''}</span>;
 };
 
 export const AuthorQueryShow = (props) => (
     <Show title={<AuthorQueryTitle />} {...props}>
         <SimpleShowLayout>
-            <TextField label="id" source="authorQueryId"/>
+            <TextField source="id"/>
             <TextField source="doi"/>
             <TextField label="author email" source="authorEmail"/>
             <TextField label="journal No" source="journalNo"/>
@@ -41,4 +48,17 @@ export const AuthorQueryShow = (props) => (
             <TextField label="article Title" source="articleTitle"/>
         </SimpleShowLayout>
     </Show>
+);
+
+export const AuthorQueryEdit = (props) => (
+    <Edit title={<AuthorQueryTitle />} {...props}>
+        <SimpleForm>
+            <DisabledInput source="id"/>
+            <TextField source="doi"/>
+            <TextField label="author email" source="authorEmail"/>
+            <TextField label="journal No" source="journalNo"/>
+            <TextField label="journal Title" source="journalTitle"/>
+            <TextField label="article Title" source="articleTitle"/>
+        </SimpleForm>
+    </Edit>
 );
